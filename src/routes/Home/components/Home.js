@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { Container } from "native-base";
 import MapContainer from './MapContainer';
+import HeaderComponent from "../../../components/HeaderComponent";
+import FooterComponent from "../../../components/FooterComponent";
+const taxiLogo = require("../../../assets/img/taxi_logo_white.png");
+const carMarker = require("../../../assets/img/carMarker.png");
 class Home extends Component {
 	componentDidMount(){
-		this.props.setName(); 
+		this.props.getCurrentLocation(); 
 	}		
 	render() {
 		const region = {
@@ -15,7 +19,18 @@ class Home extends Component {
 		}
 		return (
 		<Container>
-			<MapContainer region={region}/>
+			<HeaderComponent logo={taxiLogo}/>
+			{this.props.region.latitude &&
+			<MapContainer
+				region={this.props.region}
+				getInputData={this.props.getInputData}
+				toggleSearchResultModal={this.props.toggleSearchResultModal}
+				getAddressPredictions={this.props.getAddressPredictions}
+				resultTypes={this.props.resultTypes}
+				predictions={this.props.predictions}
+			/>
+			} 
+			<FooterComponent/>
 		</Container>
 		);
 	}

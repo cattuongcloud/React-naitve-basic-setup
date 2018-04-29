@@ -1,11 +1,21 @@
 import { connect } from "react-redux";
 import Home from "../components/Home";
-import { setName } from "../module/home";
+import { getCurrentLocation,
+		 getInputData,
+		 toggleSearchResultModal,
+		 getAddressPredictions
+ } from "../module/home";
 const mapStateToProps = (state) => ({
-	name: state.home.name
+	region: state.home.region,
+	inputData:state.home.inputData || {},
+	resultTypes:state.home.resultTypes || {},
+	predictions:state.home.predictions || []
 
-});
+}); 
 const mapActionCreators = {
-	setName
+	getCurrentLocation,
+	getInputData,
+	toggleSearchResultModal,
+	getAddressPredictions
 };
 export default connect(mapStateToProps, mapActionCreators)(Home);
