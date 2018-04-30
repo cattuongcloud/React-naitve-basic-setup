@@ -1,32 +1,59 @@
 import React from "react";
 import { View } from "native-base";
 import MapView from "react-native-maps";
-import styles from "./MapContainerStyles.js";
+
 import SearchBox from "../SearchBox";
-import SearchResults from '../SearchResults'
-export const MapContainer = ({	
+import SearchResults from "../SearchResults";
+
+import styles from "./MapContainerStyles.js";
+
+export const MapContainer = ({ 
 		region,
-		getInputData, 
+		getInputData,
 		toggleSearchResultModal,
 		getAddressPredictions,
 		resultTypes,
-		predictions
+		predictions,
+		getSelectedAddress,
+		selectedAddress		
 	})=>{
+
+	const { selectedPickUp, selectedDropOff } = selectedAddress || {};
+
 	return(
 		<View style={styles.container}>
-			<MapView provider={MapView.PROVIDER_GOOGLE}	style={styles.map} region={region}>
-				<MapView.Marker	coordinate={region} pinColor={"yellow"}/>
-			</MapView>				
+			<MapView
+				provider={MapView.PROVIDER_GOOGLE}
+				style={styles.map}
+				region={region}
+			>
+
+				{ selectedPickUp &&
+					<MapView.Marker
+						coordinate={{latitude:selectedPickUp.latitude, longitude:selectedPickUp.longitude}}
+						pinColor="green"
+
+					/>	
+				}
+				{ selectedDropOff &&
+					<MapView.Marker
+						coordinate={{latitude:selectedDropOff.latitude, longitude:selectedDropOff.longitude}}
+						pinColor="blue"
+
+					/>	
+				}
+			</MapView>
 			<SearchBox 
 				getInputData={getInputData}
-				toggleSearchResultModal={toggleSearchResultModal}	
-				getAddressPredictions = {getAddressPredictions}			
-			/>	
+				toggleSearchResultModal={toggleSearchResultModal}
+				getAddressPredictions={getAddressPredictions}
+				selectedAddress={selectedAddress}
+			/>
 			{ (resultTypes.pickUp || resultTypes.dropOff) &&
-				<SearchResults predictions={predictions} />
+			<SearchResults predictions={predictions} getSelectedAddress={getSelectedAddress}/>
 			}
-			
 		</View>
 	)
 }
+
 export default MapContainer;

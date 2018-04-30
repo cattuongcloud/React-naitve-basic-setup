@@ -6,6 +6,7 @@ import HeaderComponent from "../../../components/HeaderComponent";
 import FooterComponent from "../../../components/FooterComponent";
 const taxiLogo = require("../../../assets/img/taxi_logo_white.png");
 const carMarker = require("../../../assets/img/carMarker.png");
+import Fare from "./Fare";
 class Home extends Component {
 	componentDidMount(){
 		this.props.getCurrentLocation(); 
@@ -28,8 +29,14 @@ class Home extends Component {
 				getAddressPredictions={this.props.getAddressPredictions}
 				resultTypes={this.props.resultTypes}
 				predictions={this.props.predictions}
+				getSelectedAddress={this.props.getSelectedAddress}
+				selectedAddress={this.props.selectedAddress}
 			/>
-			} 
+			} 			
+			{
+				this.props.fare &&
+				<Fare fare={this.props.fare} />
+			}
 			<FooterComponent/>
 		</Container>
 		);
