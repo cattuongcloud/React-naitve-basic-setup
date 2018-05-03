@@ -11,6 +11,8 @@ const { GET_CURRENT_LOCATION,
 		GET_SELECTED_ADDRESS,
 		GET_DISTANCE_MATRIX,
 		GET_FARE,
+		BOOK_CAR,
+		GET_NEARBY_DRIVERS
 		 } = constants;
 
 const { width, height } = Dimensions.get("window");
@@ -128,6 +130,72 @@ export function getSelectedAddress(payload){
 	}
 }
 
+
+export function bookCar(){
+	return (dispatch, store)=>{
+		const nearByDrivers = store().home.nearByDrivers;
+		const nearByDriver = nearByDrivers[Math.floor(Math.random() * nearByDrivers.length)];
+		const payload = {
+			data:{
+				userName:"eman",
+				pickUp:{
+					address:store().home.selectedAddress.selectedPickUp.address,
+					name:store().home.selectedAddress.selectedPickUp.name,
+					latitude:store().home.selectedAddress.selectedPickUp.latitude,
+					longitude:store().home.selectedAddress.selectedPickUp.latitude
+				},
+				dropOff:{
+					address:store().home.selectedAddress.selectedDropOff.address,
+					name:store().home.selectedAddress.selectedDropOff.name,
+					latitude:store().home.selectedAddress.selectedDropOff.latitude,
+					longitude:store().home.selectedAddress.selectedDropOff.latitude
+				},
+				fare:store().home.fare,
+				status:"pending"
+			},
+			nearByDriver:{
+				socketId:nearByDriver.socketId,
+				driverId:nearByDriver.driverId,
+				latitude:nearByDriver.coordinate.coordinates[1],
+				longitude:nearByDriver.coordinate.coordinates[0]
+			}
+		};
+
+		request.post("https://infinite-plains-39598.herokuapp.com/api/bookings")
+		.send(payload)
+		.finish((error, res)=>{
+			dispatch({
+				type:BOOK_CAR,
+				payload:res.body
+			});
+		});
+
+	};
+}
+
+
+
+//get nearby drivers
+export function getNearByDrivers(){
+	return(dispatch, store)=>{
+		request.get("https://infinite-plains-39598.herokuapp.com/api/driverLocation")
+		.query({
+			latitude:10.783120,
+			longitude:106.660391	
+		})
+		.finish((error, res)=>{
+			if(res){
+				dispatch({
+					type:GET_NEARBY_DRIVERS,
+					payload:res.body
+				});
+			}
+
+		});
+	};
+}
+
+
 function handleGetCurrentLocation(state, action){
 	return update(state, {
 		region:{
@@ -238,6 +306,31 @@ function handleGetFare(state, action){
 	})
 }
 
+function handleBookCar(state, action){
+	return update(state, {
+		booking:{
+			$set:action.payload
+		}
+	})
+}
+
+
+//handle get nearby drivers
+function handleGetNearbyDrivers(state, action){
+	return update(state, {
+		nearByDrivers:{
+			$set:action.payload
+		}
+	});
+}
+// function handleBookingConfirmed(state, action){
+//     return update(state, {
+//         booking:{
+//             $set: action.payload
+//         }
+//     });
+// }
+
 const ACTION_HANDLERS = {
 	GET_CURRENT_LOCATION: handleGetCurrentLocation,
 	GET_INPUT: handleGetInputDate,
@@ -245,7 +338,10 @@ const ACTION_HANDLERS = {
 	GET_ADDRESS_PREDICTIONS:handleGetAddressPredictions	,
 	GET_SELECTED_ADDRESS:handleGetSelectedAddress,
 	GET_DISTANCE_MATRIX:handleGetDitanceMatrix,
-	GET_FARE:handleGetFare
+	GET_FARE:handleGetFare,
+	BOOK_CAR:handleBookCar,
+	GET_NEARBY_DRIVERS:handleGetNearbyDrivers
+	
 }
 const initialState = {
 	region:{},

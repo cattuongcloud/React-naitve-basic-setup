@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { Container } from "native-base";
 import MapContainer from './MapContainer';
+import Fare from "./Fare";
+import Fab from "./Fab";
 import HeaderComponent from "../../../components/HeaderComponent";
 import FooterComponent from "../../../components/FooterComponent";
 const taxiLogo = require("../../../assets/img/taxi_logo_white.png");
 const carMarker = require("../../../assets/img/carMarker.png");
-import Fare from "./Fare";
 class Home extends Component {
 	componentDidMount(){
 		this.props.getCurrentLocation(); 
@@ -32,7 +33,8 @@ class Home extends Component {
 				getSelectedAddress={this.props.getSelectedAddress}
 				selectedAddress={this.props.selectedAddress}
 			/>
-			} 			
+			} 
+			<Fab onPressAction={()=>this.props.bookCar()}/>			
 			{
 				this.props.fare &&
 				<Fare fare={this.props.fare} />

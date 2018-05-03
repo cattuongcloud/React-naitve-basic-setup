@@ -1,5 +1,5 @@
 const request = require("superagent");
-const defaultAjaxTimeout = 30000;
+const defaultAjaxTimeout = 60000;
 //const cookie = require("cookie");
 request.Request.prototype.finish = function (callback) {
     // this replaces superagent's .end() function to include our custom error handling (see above)
