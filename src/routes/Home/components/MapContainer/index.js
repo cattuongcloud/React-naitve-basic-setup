@@ -15,7 +15,9 @@ export const MapContainer = ({
 		resultTypes,
 		predictions,
 		getSelectedAddress,
-		selectedAddress		
+		selectedAddress,
+		carMarker,
+		nearByDrivers		
 	})=>{
 
 	const { selectedPickUp, selectedDropOff } = selectedAddress || {};
@@ -41,6 +43,15 @@ export const MapContainer = ({
 						pinColor="blue"
 
 					/>	
+				}
+				{
+					nearByDrivers && nearByDrivers.map((marker, index)=>
+						<MapView.Marker
+							key={index}
+							coordinate={{latitude:marker.coordinate.coordinates[1], longitude:marker.coordinate.coordinates[0] }}
+							image={carMarker}
+						/>	
+					)
 				}
 			</MapView>
 			<SearchBox 

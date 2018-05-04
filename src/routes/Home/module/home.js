@@ -137,7 +137,7 @@ export function bookCar(){
 		const nearByDriver = nearByDrivers[Math.floor(Math.random() * nearByDrivers.length)];
 		const payload = {
 			data:{
-				userName:"eman",
+				userName:"Tuong huynh",
 				pickUp:{
 					address:store().home.selectedAddress.selectedPickUp.address,
 					name:store().home.selectedAddress.selectedPickUp.name,
@@ -176,14 +176,14 @@ export function bookCar(){
 
 
 //get nearby drivers
-export function getNearByDrivers(){
+export function getNearByDrivers(){	
 	return(dispatch, store)=>{
 		request.get("https://infinite-plains-39598.herokuapp.com/api/driverLocation")
 		.query({
-			latitude:10.783120,
-			longitude:106.660391	
+			latitude:10.782361, 
+			longitude:106.658073
 		})
-		.finish((error, res)=>{
+		.finish((error, res)=>{					
 			if(res){
 				dispatch({
 					type:GET_NEARBY_DRIVERS,

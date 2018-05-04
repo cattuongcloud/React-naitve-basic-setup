@@ -5,7 +5,8 @@ import { getCurrentLocation,
 		 toggleSearchResultModal,
 		 getAddressPredictions,
 		 getSelectedAddress,
-		 bookCar
+		 bookCar,
+		 getNearByDrivers
  } from "../module/home";
 const mapStateToProps = (state) => ({
 	region: state.home.region,
@@ -15,6 +16,7 @@ const mapStateToProps = (state) => ({
 	selectedAddress:state.home.selectedAddress || {},
 	fare:state.home.fare,
 	booking:state.home.booking || {},
+	nearByDrivers:state.home.nearByDrivers || []
 	
 
 }); 
@@ -24,6 +26,7 @@ const mapActionCreators = {
 	toggleSearchResultModal,
 	getAddressPredictions,
 	getSelectedAddress,
-	bookCar
+	bookCar,
+	getNearByDrivers
 };
 export default connect(mapStateToProps, mapActionCreators)(Home);

@@ -9,8 +9,13 @@ import FooterComponent from "../../../components/FooterComponent";
 const taxiLogo = require("../../../assets/img/taxi_logo_white.png");
 const carMarker = require("../../../assets/img/carMarker.png");
 class Home extends Component {
-	componentDidMount(){
-		this.props.getCurrentLocation(); 
+	componentDidMount() {
+		var rx = this;
+		this.props.getCurrentLocation();
+		setTimeout(function(){
+			rx.props.getNearByDrivers();
+
+		}, 1000);
 	}		
 	render() {
 		const region = {
@@ -32,6 +37,8 @@ class Home extends Component {
 				predictions={this.props.predictions}
 				getSelectedAddress={this.props.getSelectedAddress}
 				selectedAddress={this.props.selectedAddress}
+				carMarker={carMarker}
+				nearByDrivers={this.props.nearByDrivers}
 			/>
 			} 
 			<Fab onPressAction={()=>this.props.bookCar()}/>			
