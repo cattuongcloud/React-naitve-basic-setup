@@ -134,7 +134,7 @@ export function getSelectedAddress(payload){
 export function bookCar(){
 	return (dispatch, store)=>{
 		const nearByDrivers = store().home.nearByDrivers;
-		const nearByDriver = nearByDrivers[Math.floor(Math.random() * nearByDrivers.length)];
+		const nearByDriver = nearByDrivers[Math.floor(Math.random() * nearByDrivers.length)];		
 		const payload = {
 			data:{
 				userName:"Tuong huynh",
@@ -142,13 +142,13 @@ export function bookCar(){
 					address:store().home.selectedAddress.selectedPickUp.address,
 					name:store().home.selectedAddress.selectedPickUp.name,
 					latitude:store().home.selectedAddress.selectedPickUp.latitude,
-					longitude:store().home.selectedAddress.selectedPickUp.latitude
+					longitude:store().home.selectedAddress.selectedPickUp.longitude
 				},
 				dropOff:{
 					address:store().home.selectedAddress.selectedDropOff.address,
 					name:store().home.selectedAddress.selectedDropOff.name,
 					latitude:store().home.selectedAddress.selectedDropOff.latitude,
-					longitude:store().home.selectedAddress.selectedDropOff.latitude
+					longitude:store().home.selectedAddress.selectedDropOff.longitude
 				},
 				fare:store().home.fare,
 				status:"pending"
@@ -176,7 +176,7 @@ export function bookCar(){
 
 
 //get nearby drivers
-export function getNearByDrivers(){	
+export function getNearByDrivers(){
 	return(dispatch, store)=>{
 		request.get("https://infinite-plains-39598.herokuapp.com/api/driverLocation")
 		.query({
@@ -323,13 +323,13 @@ function handleGetNearbyDrivers(state, action){
 		}
 	});
 }
-// function handleBookingConfirmed(state, action){
-//     return update(state, {
-//         booking:{
-//             $set: action.payload
-//         }
-//     });
-// }
+function handleBookingConfirmed(state, action){
+    return update(state, {
+        booking:{
+            $set: action.payload
+        }
+    });
+}
 
 const ACTION_HANDLERS = {
 	GET_CURRENT_LOCATION: handleGetCurrentLocation,
@@ -340,7 +340,8 @@ const ACTION_HANDLERS = {
 	GET_DISTANCE_MATRIX:handleGetDitanceMatrix,
 	GET_FARE:handleGetFare,
 	BOOK_CAR:handleBookCar,
-	GET_NEARBY_DRIVERS:handleGetNearbyDrivers
+	GET_NEARBY_DRIVERS:handleGetNearbyDrivers,
+	BOOKING_CONFIRMED:handleBookingConfirmed
 	
 }
 const initialState = {
